@@ -1,0 +1,51 @@
+BODY {
+    font-family: "Roboto";
+}
+
+.App {
+  text-align: center;
+}
+
+.App H2, H3, H4 {
+    color: #555;
+    font-weight: 300;
+}
+.App H2 {
+    font-size: 30px;    
+}
+.App H3 {
+    font-size: 26px;    
+}
+.App-header {
+    height: 165px;
+    padding: 20px;
+    text-align: center;
+}
+.App-header H1{
+    font-weight: 100;
+    font-size: 80px;
+    color: #9c27b0;
+}
+.App-header H1:before {
+    content: "Ad";
+    color: #fff;
+    background-color: #9c27b0;
+    height: 60px;
+    width: 60px;
+    display: inline-block;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 60px;
+    position: relative;
+    top: -13px;
+    left: -8px;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
