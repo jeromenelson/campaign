@@ -8,13 +8,13 @@ import Switch                   from 'material-ui/Switch';
 import {MuiThemeProvider}       from 'material-ui/styles';
 import Suggest                  from  './SuggestBox.js';
 import {getAppStyles, getTheme} from './styles.js'
-import {getUsCities}            from './data.cities.js'
-import {getLanguages}           from './data.languages.js'
-import {getDevices}             from './data.others.js'
-import {getUsers}               from './data.users.js'
-import {getShows}               from './data.shows.js'
-import {getEvents}              from './data.events.js'
-import {getInterests}           from './data.interests.js'
+import {getUsCities}            from './data/data.cities.js'
+import {getLanguages}           from './data/data.languages.js'
+import {getDevices}             from './data/data.others.js'
+import {getUsers}               from './data/data.users.js'
+import {getShows}               from './data/data.shows.js'
+import {getEvents}              from './data/data.events.js'
+import {getInterests}           from './data/data.interests.js'
 
 import './App.css';
 
