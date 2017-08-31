@@ -1,6 +1,6 @@
-import { grey, red, purple, green }           from 'material-ui/colors';
-import { MuiThemeProvider, createMuiTheme }   from 'material-ui/styles';
-import createPalette                          from 'material-ui/styles/palette';
+import { grey, red, purple, green } from 'material-ui/colors';
+import { createMuiTheme }           from 'material-ui/styles';
+import createPalette                from 'material-ui/styles/palette';
 
 //
 // Returns the application theme object
@@ -63,6 +63,12 @@ export function getAppStyles(theme) {
             fontSize: "90%",
             textTransform: "capitalize",
             color: "#ccc"
+        },
+
+        list: {
+            display: "inline-block",
+            width: 400,
+            textAlign: "left"
         }
     };
 }

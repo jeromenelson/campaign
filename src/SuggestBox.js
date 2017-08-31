@@ -1,6 +1,3 @@
-// @flow weak
-/* eslint-disable react/no-array-index-key */
-
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 import Autosuggest          from 'react-autosuggest';
@@ -34,7 +31,7 @@ class SuggestBox extends Component {
             //
             // List of selected suggestions
             //
-            selectedItems     : []
+            selectedItems     : props.selectedItems || []
         };
         
         // setup get suggestion delegate if it is not overriden,
@@ -81,10 +78,7 @@ class SuggestBox extends Component {
                            className        ={classes.textField}
                            value            ={value}
                            inputRef         ={ref}
-                           InputProps       ={{
-                            classes: {
-                              input: classes.input,
-                            },
+                           InputProps       ={{ classes : { input  : classes.input },
                             ...other,
                   }}
                 />
@@ -99,7 +93,7 @@ class SuggestBox extends Component {
     renderSuggestion = (data, { query, isHighlighted }) => {
         
       const matches = match(this.getItem(data), query);
-      const parts = parse(this.getItem(data), matches);
+      const parts   = parse(this.getItem(data), matches);
 
       return (
         <MenuItem selected={isHighlighted} component="div">
@@ -148,9 +142,8 @@ class SuggestBox extends Component {
 
       return this.data.filter(data => {
 
-        const dataL = this.getItem(data).toLowerCase();
-        const match = dataL.slice(0, inputLength);
-        
+        const dataL   = this.getItem(data).toLowerCase();
+        const match   = dataL.slice(0, inputLength);
         const isMatch = (containsMatch && dataL.indexOf(inputValue) > -1) || 
                         (!containsMatch && match === inputValue);
         
@@ -165,7 +158,7 @@ class SuggestBox extends Component {
     }  
 
     //
-    // Feches the suggestions
+    // Fetches the suggestions
     //
     handleSuggestionsFetchRequested = ({ value }) => {
 
@@ -233,9 +226,8 @@ class SuggestBox extends Component {
   render() {
       
     const { classes } = this.props;
+
     return (
-      
-    
       <section className = {[classes.autosuggestBox, this.props.hidden ? classes.hidden : ""].join(" ")}>
           <Autosuggest
             
@@ -245,16 +237,16 @@ class SuggestBox extends Component {
               suggestionsList           : classes.suggestionsList,
               suggestion                : classes.suggestion,
             }}
-            renderInputComponent        ={this.renderInput}
-            suggestions                 ={this.state.suggestions}
-            onSuggestionsFetchRequested ={this.handleSuggestionsFetchRequested}
-            onSuggestionsClearRequested ={this.handleSuggestionsClearRequested}
-            onSuggestionSelected        ={this.handleSuggestionSelected}
-            renderSuggestionsContainer  ={this.renderSuggestionsContainer}
-            getSuggestionValue          ={this.getSuggestionValue}
-            renderSuggestion            ={this.renderSuggestion}
+            renderInputComponent        = {this.renderInput}
+            suggestions                 = {this.state.suggestions}
+            onSuggestionsFetchRequested = {this.handleSuggestionsFetchRequested}
+            onSuggestionsClearRequested = {this.handleSuggestionsClearRequested}
+            onSuggestionSelected        = {this.handleSuggestionSelected}
+            renderSuggestionsContainer  = {this.renderSuggestionsContainer}
+            getSuggestionValue          = {this.getSuggestionValue}
+            renderSuggestion            = {this.renderSuggestion}
             shouldRenderSuggestions     = {this.shouldRenderSuggestions}
-            inputProps                  ={{
+            inputProps                  = {{
               autoFocus     : true,
               classes,
               placeholder   : this.props.placeholder,
@@ -268,11 +260,11 @@ class SuggestBox extends Component {
                 this.state.selectedItems.map(data => {
                   return (
                     <Chip
-                      avatar            ={<Avatar>{this.getSuggestionValue(data)[0]}</Avatar>}
-                      label             ={this.getSuggestionValue(data)}
-                      key               ={this.getSuggestionValue(data)}
-                      onRequestDelete   ={this.handleChipDelete(data)}
-                      className         ={classes.chip}
+                        avatar            = {<Avatar>{this.getSuggestionValue(data)[0]}</Avatar>}
+                        label             = {this.getSuggestionValue(data)}
+                        key               = {this.getSuggestionValue(data)}
+                        onRequestDelete   = {this.handleChipDelete(data)}
+                        className         = {classes.chip}
                     />);
                 })
             }
@@ -283,8 +275,6 @@ class SuggestBox extends Component {
   }
 }
 
-SuggestBox.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+SuggestBox.propTypes = {classes: PropTypes.object.isRequired};
 
 export default withStyles(getSuggestBoxStyles)(SuggestBox);
