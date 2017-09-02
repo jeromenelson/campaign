@@ -67,8 +67,12 @@ export function getAppStyles(theme) {
 
         list: {
             display: "inline-block",
-            width: 400,
+            width: 600,
             textAlign: "left"
+        },
+
+        deleteIcon: {
+            marginLeft: 20
         }
     };
 }

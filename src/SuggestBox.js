@@ -50,7 +50,7 @@ class SuggestBox extends Component {
         // use a default implementation
         this.shouldRenderSuggestions = props.shouldRenderSuggestions
             ? props.shouldRenderSuggestions
-            : (d) => d.length > 0;
+            : d => d.length > 0;
     
         // mandatory props - datasource
         if (!(props.dataSource instanceof Function)) {
@@ -194,30 +194,34 @@ class SuggestBox extends Component {
       if (this.state.selectedItems.indexOf(suggestion) !== -1)
           return;
       
-      let data = this.state.selectedItems;
+      const data = this.state.selectedItems;
       data.push(suggestion);
       
       this.setState({
-          selectedItems: data,
-          value: ""
+          selectedItems : data,
+          value         : ""
       });
+
+      if (this.props.onChange instanceof Function)
+          this.props.onChange();
       
   };
-  
+
   //
   // Removes a item
   //
   handleChipDelete = data => () => {
-      
-    let l = this.state.selectedItems;
-    let i = l.indexOf(data);
-        
-    if (i > -1) {
-        l.splice(i, 1);
-        this.setState({
-            selectedItems: l
-        });        
-    }
+
+      const l = this.state.selectedItems;
+      const i = l.indexOf(data);
+
+      if (i > -1) {
+          l.splice(i, 1);
+          this.setState({ selectedItems: l });
+      }
+
+      if (this.props.onChange instanceof Function)
+          this.props.onChange();
   };
   
   //

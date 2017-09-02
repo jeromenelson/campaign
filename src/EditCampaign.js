@@ -6,8 +6,11 @@ import Radio, {RadioGroup}      from 'material-ui/Radio';
 import {FormControlLabel}       from 'material-ui/Form';
 import Switch                   from 'material-ui/Switch';
 import {MuiThemeProvider}       from 'material-ui/styles';
-import Suggest                  from  './SuggestBox.js';
+
+import Suggest                  from './SuggestBox.js';
 import {getAppStyles, getTheme} from './styles.js'
+import Campaign                 from './Campaign.js'
+
 import {getUsCities}            from './data/data.cities.js'
 import {getLanguages}           from './data/data.languages.js'
 import {getDevices}             from './data/data.others.js'
@@ -15,76 +18,26 @@ import {getUsers}               from './data/data.users.js'
 import {getShows}               from './data/data.shows.js'
 import {getEvents}              from './data/data.events.js'
 import {getInterests}           from './data/data.interests.js'
+import Dialog, {
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+}                               from 'material-ui/Dialog';
+
 
 import './App.css';
 
 class KeywordItem extends Component {
 
     render = () => (
-        <article>{this.props.broadMatch}
+        <article key={this.props.key}>
             {this.props.label}
             <aside className={this.props.classes.aside}>
                 {this.props.comment} 
             </aside> 
         </article>
     );        
-}
-
-class Campaign {
-
-    constructor(c) {
-
-        if (!c) {
-            this.title              = "";
-            this.schedule           = "startNow"; // or this can be "schedule"
-            this.scheduleStartDate  = "";
-            this.scheduleEndDate    = "";
-            this.gender             = "anyGender"; // {"anyGender", "male", "female"}
-            this.cities             = [];
-            this.languages          = [];
-            this.devices            = [];
-            this.keywords           = [];
-            this.followers          = [];
-            this.interests          = [];
-            this.shows              = [];
-            this.events             = [];
-        }
-        else {
-            this.title              = c.title;
-            this.schedule           = c.schedule;
-            this.scheduleStartDate  = c.scheduleStartDate;
-            this.scheduleEndDate    = c.scheduleEndDate;
-            this.gender             = c.gender;
-            this.cities             = c.cities;
-            this.languages          = c.languages;
-            this.devices            = c.devices;
-            this.keywords           = c.keywords;
-            this.followers          = c.followers;
-            this.interests          = c.interests;
-            this.shows              = c.shows;
-            this.events             = c.events;
-        }
-    }
-
-    static load = key => {
-
-        var flat = localStorage.getItem(key);
-
-        if (!flat)
-            return new Campaign();
-
-
-        return new Campaign(JSON.parse(flat));
-    }
-
-    save = () => {
-        debugger;
-        if (!this.title)
-            throw new Error("Title is empty");
-
-        localStorage.setItem(this.title, JSON.stringify(this));
-    }
-
 }
 
 class EditCampaign extends Component{
@@ -95,12 +48,22 @@ class EditCampaign extends Component{
     constructor(props) {
         super(props);
 
-        const c = Campaign.load(props.name);
+        const c = new Campaign(props.name);
 
-        this.state = {...c };
+        this.state = {
+            ...c,
+
+            checkedEvents       : c.events.length > 0,
+            checkedLanguages    : c.languages.length > 0,
+            checkedDevices      : c.devices.length > 0,
+            checkedInterests    : c.interests.length > 0,
+            checkedFollowers    : c.followers.length > 0,
+            checkedKeywords     : c.keywords.length > 0,
+            checkedShows        : c.shows.length > 0
+        };
         
         this.handleGenderChange = this.handleGenderChange.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.onSuggestChange    = this.onSuggestChange.bind(this);
     }
    
     //
@@ -113,7 +76,7 @@ class EditCampaign extends Component{
         });
     };
 
-    keywordItem_NeedToLearnHowToRenderThis = props => (
+    keywordItem__ = props => (
         <article>{ props.broadMatch  }
             {this.props.label}
             <aside className={props.classes.aside}>
@@ -122,12 +85,12 @@ class EditCampaign extends Component{
         </article>
     ) 
 
-    handleTitleChange = event => {
+    onSuggestChange = () => {
 
-        
+        this.setState(this.state);
 
     };
-  
+
     //
     // Returns keyword suggestions
     //
@@ -137,14 +100,14 @@ class EditCampaign extends Component{
         const broadMatch = v;
         const phraseMatch = '"' + v + '"';
         const exactMatch = '[' + v + ']';
-        
+
         return [
-            <KeywordItem text={ v } label={ broadMatch        } comment="Broad Match"     classes={this.props.classes} />,
-            <KeywordItem text={ v } label={ phraseMatch       } comment="Phrase Match"    classes={this.props.classes} />,
-            <KeywordItem text={ v } label={ exactMatch        } comment="Exact Match"     classes={this.props.classes} />,
-            <KeywordItem text={ v } label={ "-" + broadMatch  } comment="Negative Match"  classes={this.props.classes} />,
-            <KeywordItem text={ v } label={ "-" + phraseMatch } comment="Negative Phrase" classes={this.props.classes} />,
-            <KeywordItem text={ v } label={ "-" + exactMatch  } comment="negative Exact"  classes={this.props.classes} />,                
+            <KeywordItem key="0" text={ v } label={ broadMatch        } comment="Broad Match"     classes={this.props.classes} />,
+            <KeywordItem key="1" text={ v } label={ phraseMatch       } comment="Phrase Match"    classes={this.props.classes} />,
+            <KeywordItem key="2" text={ v } label={ exactMatch        } comment="Exact Match"     classes={this.props.classes} />,
+            <KeywordItem key="3" text={ v } label={ "-" + broadMatch  } comment="Negative Match"  classes={this.props.classes} />,
+            <KeywordItem key="4" text={ v } label={ "-" + phraseMatch } comment="Negative Phrase" classes={this.props.classes} />,
+            <KeywordItem key="5" text={ v } label={ "-" + exactMatch  } comment="negative Exact"  classes={this.props.classes} />,                
         ];
     };
 
@@ -156,7 +119,25 @@ class EditCampaign extends Component{
         return v.props.text + ' (' + v.props.comment + ')';
     
     };
-    
+
+    //
+    // Dismisses the confirmation dialog
+    //
+    handleRequestClose = () => {
+
+        this.setState({ confirmOpen: false });
+        window.location.href = "/list";
+    };
+
+    //
+    // Saves the campaign
+    //
+    handleSave = () => {
+
+        new Campaign(this.state).save();
+        this.setState({ confirmOpen: true });
+    };
+
     render() {
         const classes = this.props.classes;
 
@@ -165,7 +146,10 @@ class EditCampaign extends Component{
         <MuiThemeProvider theme={getTheme()}>
             <div className={classes.container}>
                 <h2>Create Campaign</h2>
-
+                <blockquote>
+                    {new Campaign(this.state).toString()}
+                </blockquote>
+                <br />
                 <TextField
                     label="Name your campaign"
                     placeholder="Enter the campaign name"
@@ -220,6 +204,7 @@ class EditCampaign extends Component{
                         placeholder = "Search for US cities"
                         dataSource  = {getUsCities}
                         getItem     = {x => x["city"]}
+                        onChange    = {this.onSuggestChange}
                     />
 
                     <RadioGroup
@@ -246,6 +231,7 @@ class EditCampaign extends Component{
                             dataSource    = {getLanguages}
                             getItem       = {x => x}
                             selectedItems = {this.state.languages}
+                            onChange      = {this.onSuggestChange}
                         />
 
                         <FormControlLabel control={ 
@@ -260,6 +246,7 @@ class EditCampaign extends Component{
                               getItem                   = {x => x}
                               shouldRenderSuggestions   = { () => true }
                               selectedItems             = {this.state.devices}
+                              onChange                  = {this.onSuggestChange}
                         />
                         
                         <br/>                    
@@ -277,6 +264,7 @@ class EditCampaign extends Component{
                             getSuggestions      = { this.getKeywordSuggestions }
                             getSuggestionValue  = { this.getKeywordSuggestionValue }
                             selectedItems       = { this.keywords }
+                            onChange            = {this.onSuggestChange}
                         />                        
                         <br />
                         
@@ -292,6 +280,7 @@ class EditCampaign extends Component{
                             getItem             = {x => x}
                             applyContainsMatch  = { true }
                             selectedItems       = { this.state.followers }
+                            onChange            = {this.onSuggestChange}
                         />                                                
                         <br/>                    
                         <FormControlLabel control={ 
@@ -306,6 +295,7 @@ class EditCampaign extends Component{
                             getItem             = {x => x}
                             applyContainsMatch  = { true }
                             selectedItems       = { this.state.interests }
+                            onChange            = {this.onSuggestChange}
                         />
                         <br/>                    
                         <FormControlLabel control={ 
@@ -320,6 +310,7 @@ class EditCampaign extends Component{
                             getItem             = {x => x}
                             applyContainsMatch  = { true }
                             selectedItems       = { this.state.shows }
+                            onChange            = {this.onSuggestChange}
 
                         />
                         <br/>                    
@@ -335,17 +326,30 @@ class EditCampaign extends Component{
                             getItem             = {x => x}
                             applyContainsMatch  = { true }
                             selectedItems       = {this.state.events}
+                            onChange            = {this.onSuggestChange}
                         />                        
                         <br />                    
 
-                        <Button raised color="primary" onClick={ e => new Campaign(this.state).save() } >
-                            Save
-                        </Button>
+                        <div className={"buttons"}>
+                            <Button raised color="primary" onClick={ this.handleSave } >
+                                Save
+                            </Button>
+                        </div>
                         <br />
                     </div>
                 </section>
-
-            </div>
+                    <Dialog open={this.state.confirmOpen} onRequestClose={this.handleRequestClose}>
+                        <DialogTitle>Changes Saved</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText></DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleRequestClose} color="primary">
+                                Okay
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
         </MuiThemeProvider>
         )
     }
