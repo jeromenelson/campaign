@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
-import { HashRouter, BrowserRouter, Switch, Route, Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import { Button } from 'material-ui'
 import { withStyles } from 'material-ui/styles';
+import { MuiThemeProvider } from 'material-ui/styles';
 import {
     Add as AddIcon,
-    Edit as EditIcon,
     List as ListIcon
 } from 'material-ui-icons';
 
-import {getAppStyles}     from './styles.js'
+import { getAppStyles, getTheme}     from './styles.js'
 import EditCampaign from './EditCampaign.js'
 import ListCampaigns from './ListCampaigns.js'
 import './App.css';
@@ -21,9 +20,19 @@ class App extends Component {
 
         return (
             <div className="App">
+                <MuiThemeProvider theme={getTheme()}>
                 <BrowserRouter>
                     <div>
                         <Switch>
+                            <Route exact path='/' render={props => (
+                                <nav>
+                                    <ul>
+                                        <li><Link to="/edit"><Button fab color="primary"><AddIcon /></Button></Link></li>
+                                        <li><Link to="/list"><Button fab color="accent"><ListIcon /></Button></Link></li>
+                                    </ul>
+                                </nav>
+                            
+                                )} />
                             <Route exact path='/list' render={props => (
                                 <section>
                                     <nav><ul>
@@ -56,6 +65,7 @@ class App extends Component {
                         </Switch>
                     </div>
                 </BrowserRouter>
+                </MuiThemeProvider>
             </div>
         );
     }

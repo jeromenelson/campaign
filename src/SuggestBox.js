@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes            from 'prop-types';
-import Autosuggest          from 'react-autosuggest';
-import match                from 'autosuggest-highlight/match';
-import parse                from 'autosuggest-highlight/parse';
-import { MenuItem }         from 'material-ui/Menu';
-import TextField            from 'material-ui/TextField';
-import Paper                from 'material-ui/Paper';
-import Chip                 from 'material-ui/Chip';
-import Avatar               from 'material-ui/Avatar';
-import { withStyles }       from 'material-ui/styles';
-import {getSuggestBoxStyles, getTheme} from './styles.js'
+import React, { Component }     from 'react';
+import PropTypes                from 'prop-types';
+import Autosuggest              from 'react-autosuggest';
+import match                    from 'autosuggest-highlight/match';
+import parse                    from 'autosuggest-highlight/parse';
+import { MenuItem }             from 'material-ui/Menu';
+import TextField                from 'material-ui/TextField';
+import Paper                    from 'material-ui/Paper';
+import Chip                     from 'material-ui/Chip';
+import Avatar                   from 'material-ui/Avatar';
+import { withStyles }           from 'material-ui/styles';
+import {getSuggestBoxStyles}    from './styles.js'
 
 class SuggestBox extends Component {
   

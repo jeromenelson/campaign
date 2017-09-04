@@ -5,10 +5,9 @@ import Button                   from 'material-ui/Button';
 import Radio, {RadioGroup}      from 'material-ui/Radio';
 import {FormControlLabel}       from 'material-ui/Form';
 import Switch                   from 'material-ui/Switch';
-import {MuiThemeProvider}       from 'material-ui/styles';
 
 import Suggest                  from './SuggestBox.js';
-import {getAppStyles, getTheme} from './styles.js'
+import {getAppStyles}           from './styles.js'
 import Campaign                 from './Campaign.js'
 
 import {getUsCities}            from './data/data.cities.js'
@@ -86,9 +85,7 @@ class EditCampaign extends Component{
     ) 
 
     onSuggestChange = () => {
-
         this.setState(this.state);
-
     };
 
     //
@@ -143,7 +140,7 @@ class EditCampaign extends Component{
 
         
         return (
-        <MuiThemeProvider theme={getTheme()}>
+        
             <div className={classes.container}>
                 <h2>Create Campaign</h2>
                 <blockquote>
@@ -151,11 +148,11 @@ class EditCampaign extends Component{
                 </blockquote>
                 <br />
                 <TextField
-                    label="Name your campaign"
-                    placeholder="Enter the campaign name"
-                    className={classes.textField}
-                    onChange={ e => this.setState({ title: e.target.value }) }
-                    value={this.state.title}
+                    label       = "Name your campaign"
+                    placeholder = "Enter the campaign name"
+                    className   = {classes.textField}
+                    onChange    = { e => this.setState({ title: e.target.value }) }
+                    value       = {this.state.title}
                 /><br />
 
                 <div className={classes.label}>
@@ -164,36 +161,37 @@ class EditCampaign extends Component{
                 <br/>
                 
                 <RadioGroup
-                  name="schedule"
-                  className={classes.group}
-                  value={this.state.schedule}
-                  onChange={ e => this.setState({schedule: e.target.schedule }) }
+                  name      = "schedule"
+                  className = {classes.group}
+                  value     = {this.state.schedule}
+                  onChange  = {e => this.setState({ schedule: e.target.value })}
                 >
                   <FormControlLabel value="startNow" control={<Radio />} label="Start Immediately" />
                   <FormControlLabel value="schedule" control={<Radio />} label="Set start and end dates" />
                 </RadioGroup>            
                 
                 <br/>
-
                 
-                <section style={{display: (this.state.scheduled == "schedule" ? "block" : "none") }}>
+                <section style={{display: (this.state.schedule === "schedule" ? "block" : "none") }}>
                     <TextField
                         id                ="fromDate"
                         label             ="From date"
                         type              ="date"
-                        defaultValue      = "2017-05-24"
                         className         = {classes.dateField}
                         margin            = "normal"
                         InputLabelProps   = {{ shrink: true }}
+                        value             = {this.state.scheduleStartDate}
+                        onChange          = {e => this.setState({ scheduleStartDate: e.target.value })}
                     />
                     <TextField
                         id              = "toDate"
                         label           = "To date"
                         type            = "date"
-                        defaultValue    = "2017-05-24"
                         className       = {classes.dateField}
                         margin          = "normal"
                         InputLabelProps = {{ shrink: true }}
+                        value           = {this.state.scheduleEndDate}
+                        onChange          = {e => this.setState({ scheduleEndDate: e.target.value })}
                     />    
 
                 </section>
@@ -201,17 +199,18 @@ class EditCampaign extends Component{
                 <section>
                     <h3>Select your audiance</h3>
                     <Suggest 
-                        placeholder = "Search for US cities"
-                        dataSource  = {getUsCities}
-                        getItem     = {x => x["city"]}
-                        onChange    = {this.onSuggestChange}
+                        placeholder     = "Search for US cities"
+                        dataSource      = {getUsCities}
+                        getItem         = {x => x}
+                        onChange        = {this.onSuggestChange}
+                        selectedItems   = {this.state.cities}
                     />
 
                     <RadioGroup
-                        name="schedule"
-                        className={classes.group}
-                        value={this.state.gender}
-                        onChange={this.handleGenderChange}>
+                        name        = "schedule"
+                        className   = {classes.group}
+                        value       = {this.state.gender}
+                        onChange    = {this.handleGenderChange}>
 
                         <FormControlLabel value="anyGender" control={<Radio />} label="Any Gender" />
                         <FormControlLabel value="male"      control={<Radio />} label="Male" />
@@ -263,7 +262,7 @@ class EditCampaign extends Component{
                             getItem             = { x => x }
                             getSuggestions      = { this.getKeywordSuggestions }
                             getSuggestionValue  = { this.getKeywordSuggestionValue }
-                            selectedItems       = { this.keywords }
+                            selectedItems       = { this.state.keywords }
                             onChange            = {this.onSuggestChange}
                         />                        
                         <br />
@@ -350,7 +349,6 @@ class EditCampaign extends Component{
                         </DialogActions>
                     </Dialog>
                 </div>
-        </MuiThemeProvider>
         )
     }
 }

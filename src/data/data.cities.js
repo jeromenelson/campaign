@@ -9003,5 +9003,5 @@ const usCities =
 ];
 
 export function getUsCities() {
-    return usCities;
+    return usCities.map(c => c.city);
 }

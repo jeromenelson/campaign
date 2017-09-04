@@ -1,5 +1,15 @@
 export default class Campaign {
 
+
+    static getDefaultDate = function () {
+        const pad2 = d => (d < 10 ? "0" + d : d);
+        const d = new Date;
+
+        return d.getFullYear() + "-" +
+            pad2(d.getMonth()) + "-" +
+            pad2(d.getDate());
+    }
+
     constructor(c) {
 
         if (typeof c === "string") {
@@ -14,11 +24,13 @@ export default class Campaign {
                 c = JSON.parse(flat);
         }
 
+
         if (!c) {
+
             this.title              = "";
             this.schedule           = "startNow"; // or this can be "schedule"
-            this.scheduleStartDate  = "";
-            this.scheduleEndDate    = "";
+            this.scheduleStartDate  = Campaign.getDefaultDate();
+            this.scheduleEndDate    = Campaign.getDefaultDate();
             this.gender             = "anyGender"; // {"anyGender", "male", "female"}
             this.cities             = [];
             this.languages          = [];
@@ -44,6 +56,7 @@ export default class Campaign {
             this.shows              = c.shows;
             this.events             = c.events;
         }
+        
     }
 
     remove = () => {
@@ -57,13 +70,13 @@ export default class Campaign {
         var self = this;
 
         const getSchedule =  () => (
-            !!self.schedule
+            self.schedule === "schedule" && !!self.scheduleStartDate && !!self.scheduleEndDate
                 ? "is scheduled to starts on " + self.scheduleStartDate + " and ends on " + self.scheduleEndDate
                 : " starts immediately "
             );
 
         const getAudianceGender = () => (
-            !self.gender || self.gender != "anyGender" ? " targeting " + self.gender : " of any gender "
+            !self.gender || self.gender !== "anyGender" ? " targets " + self.gender : ""
             );
 
         const getLocation = () => (
@@ -71,7 +84,7 @@ export default class Campaign {
             );
 
         const getLanguage = () => (
-            self.languages.length > 0 ? " speaking " + self.languages.join(", ") : ""
+            self.languages.length > 0 ? " speaks " + self.languages.join(", ") : ""
             );
 
         const getDevice = () => (
@@ -94,9 +107,9 @@ export default class Campaign {
             this.events.length > 0 ? " interested in " + self.events.join(", ") : ""
         );
 
-        return `The campaign ${this.title} ${getSchedule()} and targets audiences 
+        return `The campaign ${this.title} ${getSchedule()} and 
             ${getAudianceGender()} ${getLocation()} ${getLanguage()} ${getDevice()}
-            ${getFollowers()} ${getInterests()} ${getShows()}
+            ${getFollowers()} ${getInterests()} ${getShows()} ${getEvents()}
         `;
 
     }

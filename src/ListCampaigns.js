@@ -1,5 +1,4 @@
 import React, { Component }         from 'react';
-import PropTypes                    from 'prop-types';
 import Campaign                     from './Campaign.js'
 import { withStyles }               from 'material-ui/styles';
 import Button                       from 'material-ui/Button';
