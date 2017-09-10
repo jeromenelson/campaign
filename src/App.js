@@ -9,10 +9,10 @@ import {
     List as ListIcon
 } from 'material-ui-icons';
 
-import { getAppStyles, getTheme}     from './styles.js'
-import EditCampaign from './EditCampaign.js'
-import ListCampaigns from './ListCampaigns.js'
-import './App.css';
+import { getAppStyles, getTheme}     from './styles/styles.js'
+import EditCampaign from './components/EditCampaign.js'
+import ListCampaigns from './components/ListCampaigns.js'
+import './styles/App.css';
 
 class App extends Component {
 

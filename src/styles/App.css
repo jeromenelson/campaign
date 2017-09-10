@@ -1,0 +1,84 @@
+BODY {
+    font-family: "Roboto";
+}
+
+.App blockquote {
+    display: inline-block;
+    max-width: 600px;
+    margin-top: -20px;
+    font-size: 90%;
+    margin-bottom: 20px;
+    position: relative;
+}
+.App blockquote:before {
+    display: block;
+    height: 0;
+    content: '\201C';
+    color: #999;
+    font-size: 120px;
+    left: -35px;
+    position: absolute;
+    top: -35px;
+    font-family: sans-serif;
+}
+
+.App {
+  text-align: center;
+}
+.App nav li {
+    display: inline-block;
+    padding: 0 8px;
+}
+
+.App H2, H3, H4 {
+    color: #555;
+    font-weight: 300;
+}
+.App H2 {
+    font-size: 30px;    
+}
+.App H3 {
+    font-size: 26px;    
+}
+.App-header {
+    font-weight: 100;
+    font-size: 30px;
+    color: #9c27b0;
+    border-bottom: 1px solid;
+    padding-bottom: 10px;
+    text-align: center;
+}
+.App-header H1{
+    font-weight: 100;
+    font-size: 34px;
+    color: #9c27b0;
+    display: inline-block;
+}
+.App-header H1:before {
+    content: "Ad";
+    color: #fff;
+    background-color: #9c27b0;
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+    font-size: 35px;
+    font-weight: 800;
+    line-height: 50px;
+    position: relative;
+    top: 0px;
+    left: -8px;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.App .buttons {
+    text-align: center;
+    margin: 30px 0;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
